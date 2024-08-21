@@ -12,35 +12,37 @@
 */
 
 //include header
-#include "pwm.h"
+#include "pwm_phase_3.h"
 
 //define Constants
 #define CLK_FREQ 64
 #define ARR_VALUE 500
 
 //functions
-void PWMfreq(double freq) //freq[kHz], upto 84kHz
+void PWMfreq(double freq) //freq[kHz]
 {
-    int PSC = 0;
+    uint16_t PSC = 0;
     __HAL_TIM_SET_AUTORELOAD(&htim1, ARR_VALUE - 1); //set ARR to 500-1
 
-    PSC = (int)round(CLK_FREQ*2/ freq);
+    PSC = (uint16_t)round(CLK_FREQ*2/ freq);
     __HAL_TIM_SET_PRESCALER(&htim1, PSC - 1);
 }
 
 void PWMduty(double sinfreq)
 {
-    int CRR1 = 0, CRR2 = 0, CRR3 = 0;
+    uint16_t CRR1 = 0;
+    uint16_t CRR2 = 0;
+    uint16_t CRR3 = 0;
     double omega = 2 * M_PI * sinfreq;
     
     // Phase A (0 degree)
-    CRR1 = (int)(250 * (sin(omega * t) + 1));
+    CRR1 = (uint16_t)(ARR_VALUE*0.45 * (sin(omega * t)) + ARR_VALUE*0.5 - 1);
 
     // Phase B (120 degree phase shift)
-    CRR2 = (int)(250 * (sin(omega * t - (2 * M_PI / 3)) + 1));
+    CRR2 = (uint16_t)(ARR_VALUE*0.45 * (sin(omega * t - (2 * M_PI / 3))) + ARR_VALUE*0.5 - 1);
 
     // Phase C (240 degree phase shift)
-    CRR3 = (int)(250 * (sin(omega * t + (2 * M_PI / 3)) + 1));
+    CRR3 = (uint16_t)(ARR_VALUE*0.45 * (sin(omega * t + (2 * M_PI / 3))) + ARR_VALUE*0.5 - 1);
 
 
     // Update the PWM compare registers for each phase
