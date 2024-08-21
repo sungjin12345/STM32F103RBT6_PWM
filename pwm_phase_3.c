@@ -36,13 +36,13 @@ void PWMduty(double sinfreq)
     double omega = 2 * M_PI * sinfreq;
     
     // Phase A (0 degree)
-    CRR1 = (uint16_t)(ARR_VALUE*0.45 * (sin(omega * t)) + ARR_VALUE*0.5 - 1);
+    CRR1 = (uint16_t)(ARR_VALUE*0.4 * (sin(omega * t)) + ARR_VALUE*0.5 - 1);
 
     // Phase B (120 degree phase shift)
-    CRR2 = (uint16_t)(ARR_VALUE*0.45 * (sin(omega * t - (2 * M_PI / 3))) + ARR_VALUE*0.5 - 1);
+    CRR2 = (uint16_t)(ARR_VALUE*0.4 * (sin(omega * t - (2 * M_PI / 3))) + ARR_VALUE*0.5 - 1);
 
     // Phase C (240 degree phase shift)
-    CRR3 = (uint16_t)(ARR_VALUE*0.45 * (sin(omega * t + (2 * M_PI / 3))) + ARR_VALUE*0.5 - 1);
+    CRR3 = (uint16_t)(ARR_VALUE*0.4 * (sin(omega * t + (2 * M_PI / 3))) + ARR_VALUE*0.5 - 1);
 
 
     // Update the PWM compare registers for each phase
