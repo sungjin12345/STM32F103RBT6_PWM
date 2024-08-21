@@ -24,7 +24,7 @@ void PWMfreq(double freq) //freq[kHz]
     uint16_t PSC = 0;
     __HAL_TIM_SET_AUTORELOAD(&htim1, ARR_VALUE - 1); //set ARR to 500-1
 
-    PSC = (uint16_t)round(CLK_FREQ*2/ freq);
+    PSC = (uint16_t)round(CLK_FREQ*2/ (freq*2)); //for the symmetric PWM
     __HAL_TIM_SET_PRESCALER(&htim1, PSC - 1);
 }
 
